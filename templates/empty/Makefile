@@ -78,6 +78,11 @@ include bsp.mk
 # optional
 -include freertos.mk
 
+# LVGL: updates BUILD_TREE, INCLUDE and OBJ
+#       adds -DSTM32F7 to CFLAGS to enable DMA2D
+# optional
+-include lvgl.mk
+
 # User src: updates BUILD_TREE, INCLUDE and OBJ,
 #           defines PROJ_INC, headers wich trig a rebuild
 include core.mk
@@ -155,15 +160,15 @@ dbg: $(PRODUCT_ELF)
 
 # Cleaning ####################################################################
 clean:
-	@rm -vf $(OBJ) $(PRODUCT_TMP)
+	-@rm -vf $(OBJ) $(PRODUCT_TMP)
 
 distclean: clean
-	@rm -vf $(DEP) $(STU) $(DEBUG_SYMBOLS) tags
-	@rm -vf $(PRODUCT_BIN) $(PRODUCT_ELF) $(PRODUCT_HEX)
-	@rm -vf $(PRODUCT_MAP) $(PRODUCT_LIST) compiler.def
+	-@rm -vf $(DEP) $(STU) $(DEBUG_SYMBOLS) tags
+	-@rm -vf $(PRODUCT_BIN) $(PRODUCT_ELF) $(PRODUCT_HEX)
+	-@rm -vf $(PRODUCT_MAP) $(PRODUCT_LIST) compiler.def
 
-erase: distclean
-	rm -rvf $(BUILD) Debug Release
+erase: clean distclean
+	-rm -rvf $(BUILD) Debug Release
 
-.PHONY: obj dep clean distclean all
+.PHONY: obj dep clean distclean erase all
 

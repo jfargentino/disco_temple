@@ -91,3 +91,6 @@ find . -size 0 -name "*.patch" -exec rm -v '{}' \;
 # how to detect file/symbol named as the project ?
 #grep -Hn $PROJECT *.patch | grep -v "diff -Naur $PROJECT"
 
+
+ls -l "$PROJECT"_*.patch
+

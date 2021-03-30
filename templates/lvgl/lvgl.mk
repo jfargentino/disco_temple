@@ -15,16 +15,19 @@
 # 
 ##
 
-# FreeRTOS ####################################################################
-FREERTOS_DIR   := Middlewares/Third_Party/FreeRTOS
-FREERTOS_INC   := $(FREERTOS_DIR)/Source/include
-PORTABLE_INC   := $(FREERTOS_DIR)/Source/portable/GCC/ARM_CM7/r0p1/
-FREERTOS_SRC   := $(shell find $(FREERTOS_DIR) -name '*.c')
-FREERTOS_SUB   := $(shell find $(FREERTOS_DIR) -type d)
-FREERTOS_BUILD := $(addprefix $(BUILD)/, $(FREERTOS_SUB))
-FREERTOS_OBJ   := $(addprefix $(BUILD)/, $(patsubst %.c, %.o, $(FREERTOS_SRC)))
+# LVGL ########################################################################
+LVGL_DIR   := Middlewares/Third_Party/lvgl
+LVGL_INC   := $(LVGL_DIR)/src
+LVGL_SRC   := $(shell find $(LVGL_DIR) -name '*.c')
+LVGL_SUB   := $(shell find $(LVGL_DIR) -type d)
+LVGL_BUILD := $(addprefix $(BUILD)/, $(LVGL_SUB))
+LVGL_OBJ   := $(addprefix $(BUILD)/, $(patsubst %.c, %.o, $(LVGL_SRC)))
 
-BUILD_TREE += $(FREERTOS_BUILD)
-INCLUDE += -I$(FREERTOS_INC) -I$(PORTABLE_INC)
-OBJ += $(FREERTOS_OBJ)
+# to avoid warning lv_gpu/lv_gpu_stm32_dma2d.c line 71:
+#"LVGL can't enable the clock of DMA2D"
+CFLAGS += -DSTM32F7
+
+BUILD_TREE += $(LVGL_BUILD)
+INCLUDE += -I$(LVGL_INC)
+OBJ += $(LVGL_OBJ)
 

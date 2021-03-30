@@ -113,6 +113,17 @@ if [ $FREERTOS -gt 0 ]; then
     cp -v templates/freertos/freertos.mk $WORKSPACE/$PROJECT/
 fi
 
+# copy LVGL ###################################################################
+if [ $LVGL -gt 0 ]; then
+    mkdir -p $WORKSPACE/$PROJECT/$THIRD_PART/
+    L_LVGL=$WORKSPACE/$PROJECT/$THIRD_PART/lvgl
+    R_LVGL=./$THIRD_PART/lvgl-7.11.0
+    cp -rv $R_LVGL $L_LVGL
+    cp -rv templates/lvgl/Core/ $WORKSPACE/$PROJECT/
+    cp -v templates/lvgl/lvgl.mk $WORKSPACE/$PROJECT/
+    cp -v templates/lvgl/.cproject $WORKSPACE/$PROJECT/
+fi
+
 # substitute the project name #################################################
 _template_rename() {
     SRC=$1

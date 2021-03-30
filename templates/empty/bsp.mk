@@ -19,13 +19,19 @@
 BSP := audio camera eeprom lcd qspi sd sdram ts
 
 # BSP #########################################################################
-BSP_DIR   := Drivers/BSP/STM32746G-Discovery
+BSP_DIR := Drivers/BSP/STM32746G-Discovery
+BSP_SRC := $(BSP_DIR)/stm32746g_discovery.c
+BSP_SRC += $(addsuffix .c, $(addprefix $(BSP_DIR)/stm32746g_discovery_, $(BSP)))
+
+BSP_DIR += Drivers/BSP/Components
+BSP_SRC += $(shell find Drivers/BSP/Components -name '*.c')
+COMP_DIR := $(shell find Drivers/BSP/Components -type d)
+
 BSP_INC   := $(BSP_DIR)
-BSP_SRC   := $(BSP_DIR)/stm32746g_discovery.c
-BSP_SRC   += $(addsuffix .c, $(addprefix $(BSP_DIR)/stm32746g_discovery_, $(BSP)))
 BSP_BUILD := $(addprefix $(BUILD)/, $(BSP_DIR))
 BSP_OBJ   := $(addprefix $(BUILD)/, $(patsubst %.c, %.o, $(BSP_SRC)))
 
 BUILD_TREE += $(BSP_BUILD)
-INCLUDE += -I$(BSP_INC)
+BUILD_TREE += $(addprefix $(BUILD)/,$(COMP_DIR))
+INCLUDE += $(addprefix -I, $(BSP_INC))
 OBJ += $(BSP_OBJ)

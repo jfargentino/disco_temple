@@ -17,7 +17,6 @@
 
 #include "stm32f7xx_it.h"
 #include "stm32f7xx_hal.h"
-#include "lvgl.h"
 
 /******************************************************************************/
 /*            Cortex-M7 Processor Exceptions Handlers                         */
@@ -119,7 +118,7 @@ void PendSV_Handler(void)
 void SysTick_Handler(void)
 {
   HAL_IncTick();
-  lv_tick_inc(1);
+  HAL_SYSTICK_Callback();
 }
   
 /******************************************************************************/

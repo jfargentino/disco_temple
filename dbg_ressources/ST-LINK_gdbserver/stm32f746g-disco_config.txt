@@ -1,0 +1,72 @@
+# TODO --external-init
+# TODO --pend-hal-timeout
+# TODO --halt
+# TODO --initialize-reset
+
+###############################################################
+#  -e                 : Enables persistant mode
+# so gdb must run extended-remote instead of remote for target
+# connection, e.g "target extended-remote 127.0.0.1:61234"
+###############################################################
+-e
+
+###############################################################
+#  -f <Log-File>      : Name of log file. Please make sure
+#                       that directory not is write protected.
+###############################################################
+#-f debug.log
+
+###############################################################
+#  -l <Log-Level>     : Logging level between 0 & 31
+#          0            Disables logging
+#          >=1          Enables logging of error messages
+#          >=2          Adds warning messages
+#          >=4          Adds communication specific messages
+#          >=8          Adds all information messages
+#          >=16         Adds all HW specific messages
+###############################################################
+-l 31
+
+###############################################################
+#  -p <Port-Number>   : TCP-Listen Port-Number.
+###############################################################
+-p 61234
+
+###############################################################
+#  -v                 : Enables verbose mode
+###############################################################
+-v
+
+###############################################################
+#  -r <delay-sec>     : Maximum Delay in status refresh
+###############################################################
+-r 15
+
+# turn on flash download verify
+--verify
+
+###############################################################
+#  -d                 : Enables SWD mode
+###############################################################
+--swd
+
+# TODO -z SWO output port nb
+--swo-port 61235
+
+# TODO -a CPU clk speed in Hz to use with SWV
+--cpu-clock 200000000
+
+# TODO -b SWO clk div
+--swo-clock-div 100
+
+###############################################################
+#  -t                 : Shared mode using ST-LINK server
+###############################################################
+#-t
+
+###############################################################
+#  -cp <path>         : Path to STM32CubeProgrammer
+#                       Modify to correct path
+#                       for STM32_Programmer_CLI executable
+###############################################################
+#-cp <path to directory containing STM32_Programmer_CLI executable>

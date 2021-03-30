@@ -16,8 +16,8 @@
 ##
 
 # call with arm-none-eabi-gdb -x gdbinit Debug/empty.elf
-#target extended-remote 127.0.0.1:61234
-target extended-remote 127.0.0.1:4242
+target extended-remote 127.0.0.1:61234
+#target extended-remote 127.0.0.1:4242
 
 # Connect Normally
 #monitor reset_config none separate

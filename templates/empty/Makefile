@@ -45,7 +45,7 @@ PRODUCT_LIST  := $(patsubst %.elf,%.list,$(PRODUCT_ELF))
 DEBUG_SYMBOLS := $(PRODUCT_BASE).debug
 
 # default target builds dependencies too (det target)
-all: $(PRODUCT_ELF) $(PRODUCT_HEX) $(PRODUCT_BIN) $(PRODUCT_LIST) dep
+all: $(PRODUCT_ELF) $(PRODUCT_HEX) $(PRODUCT_BIN) $(PRODUCT_LIST) dep tags
 	$(SIZE) $(PRODUCT_ELF)
 
 # sub-makefiles inclusions ####################################################
@@ -141,6 +141,9 @@ STU := $(patsubst %.o, %.su, $(OBJ))
 
 # TODO vpath %.c $(HAL_DIR)/Src $(BSP_DIR)
 
+tags: $(PROJ_SRC) $(PROJ_INC)
+	ctags -R .
+
 # FLASH and DBG ###############################################################
 # TODO
 dbgserver:
@@ -155,7 +158,7 @@ clean:
 	@rm -vf $(OBJ) $(PRODUCT_TMP)
 
 distclean: clean
-	@rm -vf $(DEP) $(STU) $(DEBUG_SYMBOLS)
+	@rm -vf $(DEP) $(STU) $(DEBUG_SYMBOLS) tags
 	@rm -vf $(PRODUCT_BIN) $(PRODUCT_ELF) $(PRODUCT_HEX)
 	@rm -vf $(PRODUCT_MAP) $(PRODUCT_LIST) compiler.def
 

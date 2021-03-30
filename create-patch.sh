@@ -58,7 +58,7 @@ mv $WORKSPACE/$PROJECT "$WORKSPACE/$PROJECT""-$X"
 cd "$WORKSPACE"
 
 # Whole project patch
-diff -Naur $PROJECT "$PROJECT""-$X" > "$THERE/$PROJECT"_complete.patch
+#diff -Naur $PROJECT "$PROJECT""-$X" > "$THERE/$PROJECT"_complete.patch
 
 # Main patch to apply to the template
 diff -Naur "$PROJECT"/Core "$PROJECT""-$X"/Core \

@@ -18,8 +18,6 @@
 #include <stdio.h>
 #include "stm32746g_discovery.h"
 #include "itm.h"
-#include "tft.h"
-#include "touchpad.h"
 #include "lvgl.h"
 #include "lv_demo_widgets.h"
 
@@ -51,7 +49,6 @@ int main(void) {
   
     /* Configure the MPU attributes as Write Through */
     MPU_Config();
-
     /* Enable I-Cache */
     SCB_EnableICache();
     /* Enable D-Cache */
@@ -69,43 +66,20 @@ int main(void) {
     /* Configure the System clock to have a frequency of 216 MHz */
     SystemClock_Config();
 
-
     /* Application code starts here ******************************/
 
 #if (defined PRODUCT_NAME)
     greetings (PRODUCT_NAME);
 #else
-    greetings ("Hello empty world !");
+    greetings ("Hello LVGL world !");
 #endif
-
-    lv_init();
-    tft_init();
-    touchpad_init();
     lv_demo_widgets();
-
-    unsigned long loop_nb = 0u;
-    /* Infinite loop */
-    ITM_dbg_puts("entering infinite loop\n");
     while (1)
     {
-    	if (0) {
-    		printf ("loop[%lu]...\n", loop_nb);
-
-    		ITM_puts ("SET\n", 4);
-        	BSP_LED_On(LED1);
-        	HAL_Delay(500);
-
-        	ITM_puts ("RESET\n", 6);
-        	BSP_LED_Off(LED1);
-        	HAL_Delay(500);
-
-        	ITM_dbg_puts("one more loop done\n");
-        	loop_nb ++;
-        	assert_param(loop_nb % 10);
-    	} else {
-    		HAL_Delay(5);
-    		lv_task_handler();
-    	}
+    	HAL_Delay(5);
+    	BSP_LED_On(LED1);
+    	lv_task_handler();
+    	BSP_LED_Off(LED1);
     }
 }
 

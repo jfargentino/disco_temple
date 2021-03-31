@@ -22,6 +22,8 @@
   */ 
 
 #include "stm32746g_discovery.h"
+#include "tft.h"
+#include "touchpad.h"
 #include "lvgl.h"
 
 /**
@@ -33,6 +35,9 @@ void HAL_MspInit(void)
     ITM_Init();
     // Using LED1 as defined in stm32746g_discovery.h
     BSP_LED_Init(LED1);
+    lv_init();
+    tft_init();
+    touchpad_init();
     ITM_dbg_puts ("HAL_MspInit done");
 }
 

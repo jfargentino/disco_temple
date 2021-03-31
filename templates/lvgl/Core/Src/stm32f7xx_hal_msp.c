@@ -49,6 +49,7 @@ void HAL_MspDeInit(void)
 {
 	ITM_dbg_puts ("entering HAL_MspDeInit");
 	BSP_LED_DeInit(LED1);
+	lv_deinit();
 	ITM_DeInit ();
 }
 

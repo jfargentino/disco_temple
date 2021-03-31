@@ -70,7 +70,6 @@ static bool touchpad_read(lv_indev_drv_t *indev __attribute__((unused)),
     /* Read your touchpad */
     static int16_t last_x = 0;
     static int16_t last_y = 0;
-    BSP_LED_Toggle(LED1);
 
     BSP_TS_GetState(&TS_State);
     if(TS_State.touchDetected) {

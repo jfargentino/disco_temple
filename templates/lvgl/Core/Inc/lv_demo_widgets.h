@@ -10,26 +10,13 @@
 extern "C" {
 #endif
 
-/*********************
- *      INCLUDES
- *********************/
+#include "lvgl.h"
 
-/*********************
- *      DEFINES
- *********************/
+#if LV_VERSION_CHECK(7, 7, 1) == 0
+#error "lv_examples: Wrong lvgl version"
+#endif
 
-/**********************
- *      TYPEDEFS
- **********************/
-
-/**********************
- * GLOBAL PROTOTYPES
- **********************/
 void lv_demo_widgets(void);
-
-/**********************
- *      MACROS
- **********************/
 
 #ifdef __cplusplus
 } /* extern "C" */

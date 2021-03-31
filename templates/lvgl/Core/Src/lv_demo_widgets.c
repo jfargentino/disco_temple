@@ -6,9 +6,7 @@
 /*********************
  *      INCLUDES
  *********************/
-#include "lv_examples.h"
-
-#if LV_USE_DEMO_WIDGETS
+#include "lv_demo_widgets.h"
 
 /*********************
  *      DEFINES
@@ -713,4 +711,3 @@ static void tab_changer_task_cb(lv_task_t * task)
 }
 #endif
 
-#endif

@@ -86,6 +86,19 @@ We will try to write and modify code in the [Core directory](./templates/empty/C
   * the [system initialization code](./templates/empty/Core/Src/system_stm32f7xx.c), called just before `main`, to setup the memory (external RAM, FLASH...), relocate interrupt vector table, setting clocks
   * the [application entry point](./templates/empty/Core/Src/main.c), the error handler, and `asset_failed` definition
 
+## LVGL
+
+The LVGL portage need display and input drivers.
+
+  1. [`tft.c`](./templates/lvgl/Core/Src/tft.c) is the for the display, it declares the display buffer `static lv_disp_buf_t disp_buf_1;`, which is initialized right after. The rendering function is `static void ex_disp_flush(lv_disp_drv_t*, const lv_area_t*, lv_color_t*)`, it is registered as a callback by `disp_drv.flush_cb = ex_disp_flush;`
+  2. [`touchpad.c`](./templates/lvgl/Core/Src/touchpad.c) for the capacitive touchscreed input. It only contains a function to read the input, there `bool touchpad_read(lv_indev_drv_t*, lv_indev_data_t*)`, registered as callback with `indev_drv.read_cb = touchpad_read;`
+
+Then, to run the GUI, two functions must be periodically called:
+  1. [`lv_tick_inc`](./templates/lvgl/Core/Src/stm32f7xx_hal_msp.c) to increment the LVGL internal tick counter in ms. Must be called with the nb of ms ellapsed since its last call.
+  2. [`lv_task_handler`](./templates/lvgl/Core/Src/main.c) to grab pending inputs if any, and updates the GUI.
+
+
+    
 ---
 
 ## TODOs

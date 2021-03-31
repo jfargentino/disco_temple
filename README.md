@@ -97,8 +97,8 @@ Then, to run the GUI, two functions must be periodically called:
   1. [`lv_tick_inc`](./templates/lvgl/Core/Src/stm32f7xx_hal_msp.c) to increment the LVGL internal tick counter in ms. Must be called with the nb of ms ellapsed since its last call.
   2. [`lv_task_handler`](./templates/lvgl/Core/Src/main.c) to grab pending inputs if any, and updates the GUI.
 
+TODO: LV_LVGL_H_INCLUDE_SIMPLE
 
-    
 ---
 
 ## TODOs

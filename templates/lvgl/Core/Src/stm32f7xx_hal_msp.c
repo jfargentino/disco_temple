@@ -26,6 +26,45 @@
 #include "touchpad.h"
 #include "lvgl.h"
 
+
+#if !defined(LV_LOG_PRINTF) || (LV_LOG_PRINTF <= 0)
+static void lv_log_printer (lv_log_level_t level,
+							const char * file_path,
+							uint32_t line_nb,
+							const char * function_name,
+							const char * description) {
+	ITM_puts("[LV ", 4);
+	switch (level) {
+		case LV_LOG_LEVEL_TRACE:
+		ITM_puts("DBG", 3);
+		break;
+		case LV_LOG_LEVEL_INFO:
+	    ITM_puts("INF", 3);
+		break;
+		case LV_LOG_LEVEL_WARN:
+	    ITM_puts("WRN", 3);
+		break;
+		case LV_LOG_LEVEL_ERROR:
+		ITM_puts("ERR", 3);
+		break;
+		case LV_LOG_LEVEL_USER:
+		ITM_puts("USR", 3);
+		break;
+		default:
+		ITM_puts("???", 3);
+		break;
+	}
+	ITM_puts("][", 2);
+	ITM_puts(file_path, 256);
+	ITM_puts(":", 1);
+	ITM_puts(function_name, 256);
+	// TODO line nb
+	ITM_puts("]", 1);
+	ITM_puts(description, 256);
+	ITM_puts("\n", 1);
+}
+#endif /* !defined(LV_LOG_PRINTF) || (LV_LOG_PRINTF <= 0) */
+
 /**
   * @brief  Initializes the Global MSP.
   * @retval None
@@ -38,6 +77,12 @@ void HAL_MspInit(void)
     lv_init();
     tft_init();
     touchpad_init();
+
+#if !defined(LV_LOG_PRINTF) || (LV_LOG_PRINTF <= 0)
+    // Connect LVGL logger to ITM trace
+    lv_log_register_print_cb(lv_log_printer);
+#endif
+
     ITM_dbg_puts ("HAL_MspInit done");
 }
 

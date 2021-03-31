@@ -57,6 +57,11 @@ mv $WORKSPACE/$PROJECT "$WORKSPACE/$PROJECT""-$X"
 # thus pathes are clearer in patch files
 cd "$WORKSPACE"
 
+CREATE_PATCH_REVIEW=1
+if [ ! -z $CREATE_PATCH_REVIEW ]; then
+    meld "$PROJECT" "$PROJECT""-$X"
+fi
+
 # Whole project patch
 #diff -Naur $PROJECT "$PROJECT""-$X" > "$THERE/$PROJECT"_complete.patch
 
@@ -64,7 +69,7 @@ cd "$WORKSPACE"
 diff -Naur "$PROJECT"/Core "$PROJECT""-$X"/Core \
            > "$THERE/$PROJECT"_Core.patch
 
-# patches to keep around !
+# patches to keep around if not empty !
 diff -Naur "$PROJECT"/Drivers "$PROJECT""-$X"/Drivers \
            > "$THERE/$PROJECT"_Drivers.patch
 diff -Naur "$PROJECT"/Utilities "$PROJECT""-$X"/Utilities \

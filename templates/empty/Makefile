@@ -136,9 +136,9 @@ obj: $(BUILD_TREE) $(OBJ)
 DEP := $(patsubst %.o, %.d, $(OBJ))
 
 # build depency files
-dep: $(BUILD_TREE) $(DEP) compiler.def
+dep: $(BUILD_TREE) $(DEP) $(BUILD)/compiler.def
 
-compiler.def:
+$(BUILD)/compiler.def:
 	$(CC) -E -dM - < /dev/null > $@
 
 # stack usage files are alonside the object, "*.su" extension
@@ -165,7 +165,7 @@ clean:
 distclean: clean
 	-@rm -vf $(DEP) $(STU) $(DEBUG_SYMBOLS) tags
 	-@rm -vf $(PRODUCT_BIN) $(PRODUCT_ELF) $(PRODUCT_HEX)
-	-@rm -vf $(PRODUCT_MAP) $(PRODUCT_LIST) compiler.def
+	-@rm -vf $(PRODUCT_MAP) $(PRODUCT_LIST) $(BUILD)/compiler.def
 
 erase: clean distclean
 	-rm -rvf $(BUILD) Debug Release

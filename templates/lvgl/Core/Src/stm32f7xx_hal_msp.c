@@ -27,6 +27,7 @@
 #include "lvgl.h"
 
 
+/* Use ITM trace for LVGL logger */
 #if !defined(LV_LOG_PRINTF) || (LV_LOG_PRINTF <= 0)
 static void lv_log_printer (lv_log_level_t level,
 							const char * file_path,
@@ -123,5 +124,6 @@ void HAL_PPP_MspDeInit(void)
   */
 void HAL_SYSTICK_Callback(void)
 {
+	/* Increment LVGL internal counter with the nb of ms since last call */
 	lv_tick_inc(1);
 }

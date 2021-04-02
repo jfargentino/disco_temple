@@ -42,11 +42,39 @@ static void greetings (char const * show) {
 #else
 	ITM_puts (" unknown CC\n", 256);
 #endif
-	/* TODO displaying HAL, CMSIS, BSP... versions */
+	/* TODO displaying HAL, CMSIS, BSP, LVGL... versions */
 }
 
 int main(void) {
   
+    // IRQ still enabled in debug if following is commented
+	// FIXME EVEN WITH ALL THE FOLLOWING, CPY_BUF_DMA_STREAM_IRQHANDLER !!!
+	__HAL_DBGMCU_FREEZE_TIM2();
+	__HAL_DBGMCU_FREEZE_TIM3();
+	__HAL_DBGMCU_FREEZE_TIM4();
+	__HAL_DBGMCU_FREEZE_TIM5();
+	__HAL_DBGMCU_FREEZE_TIM6();
+	__HAL_DBGMCU_FREEZE_TIM7();
+	__HAL_DBGMCU_FREEZE_TIM12();
+	__HAL_DBGMCU_FREEZE_TIM13();
+	__HAL_DBGMCU_FREEZE_TIM14();
+	__HAL_DBGMCU_FREEZE_LPTIM1();
+	__HAL_DBGMCU_FREEZE_RTC();
+	__HAL_DBGMCU_FREEZE_WWDG();
+	__HAL_DBGMCU_FREEZE_IWDG();
+	__HAL_DBGMCU_FREEZE_I2C1_TIMEOUT();
+	__HAL_DBGMCU_FREEZE_I2C2_TIMEOUT();
+	__HAL_DBGMCU_FREEZE_I2C3_TIMEOUT();
+	//__HAL_DBGMCU_FREEZE_I2C4_TIMEOUT();
+	__HAL_DBGMCU_FREEZE_CAN1();
+	__HAL_DBGMCU_FREEZE_CAN2();
+	__HAL_DBGMCU_FREEZE_TIM1();
+	__HAL_DBGMCU_FREEZE_TIM8();
+	__HAL_DBGMCU_FREEZE_TIM9();
+	__HAL_DBGMCU_FREEZE_TIM10();
+	__HAL_DBGMCU_FREEZE_TIM11();
+
+
     /* Configure the MPU attributes as Write Through */
     MPU_Config();
     /* Enable I-Cache */

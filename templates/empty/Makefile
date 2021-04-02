@@ -139,7 +139,7 @@ DEP := $(patsubst %.o, %.d, $(OBJ))
 dep: $(BUILD_TREE) $(DEP) $(BUILD)/compiler.def
 
 $(BUILD)/compiler.def:
-	$(CC) -E -dM - < /dev/null > $@
+	$(CC) $(CFLAGS) -E -dM - < /dev/null > $@
 
 # stack usage files are alonside the object, "*.su" extension
 STU := $(patsubst %.o, %.su, $(OBJ))

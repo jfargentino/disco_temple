@@ -43,11 +43,17 @@ static void greetings (char const * show) {
 	/* TODO displaying HAL, CMSIS, BSP... versions */
 }
 
+// defined in stm32f7xx_hal_msp.c
+extern void HAL_DBGMCU_FREEZE_ALL (void);
+
 int main(void) {
   
+    // IRQ still enabled in debug if following is commented
+	// FIXME EVEN WITH ALL THE FOLLOWING, CPY_BUF_DMA_STREAM_IRQHANDLER !!!
+	HAL_DBGMCU_FREEZE_ALL();
+
     /* Configure the MPU attributes as Write Through */
     MPU_Config();
-
     /* Enable I-Cache */
     SCB_EnableICache();
     /* Enable D-Cache */
@@ -65,9 +71,8 @@ int main(void) {
     /* Configure the System clock to have a frequency of 216 MHz */
     SystemClock_Config();
 
+    /* Application code starts here ******************************/
 
-    /* Add your application code here
-       */
 #if (defined PRODUCT_NAME)
     greetings (PRODUCT_NAME);
 #else

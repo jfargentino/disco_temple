@@ -51,8 +51,8 @@ extern void HAL_DBGMCU_FREEZE_ALL (void);
 int main(void) {
   
     // IRQ still enabled in debug if following is commented
-	// FIXME EVEN WITH ALL THE FOLLOWING, CPY_BUF_DMA_STREAM_IRQHANDLER !!!
-	HAL_DBGMCU_FREEZE_ALL();
+    // FIXME EVEN WITH ALL THE FOLLOWING, CPY_BUF_DMA_STREAM_IRQHANDLER !!!
+    HAL_DBGMCU_FREEZE_ALL();
 
     /* Configure the MPU attributes as Write Through */
     MPU_Config();

@@ -16,7 +16,7 @@
 ##
 
 # Toolchain ###################################################################
-TOOLCHAIN ?= arm-none-eabi-
+TOOLCHAIN ?=
 CC        := $(TOOLCHAIN)gcc
 AS        := $(TOOLCHAIN)as
 LD        := $(TOOLCHAIN)gcc
@@ -25,16 +25,7 @@ OBJDUMP   := $(TOOLCHAIN)objdump
 STRIP     := $(TOOLCHAIN)strip
 SIZE      := $(TOOLCHAIN)size
 
-LD_SCRIPT ?= STM32F746NGHX_FLASH.ld
-
 # Flags #######################################################################
-MCPU := cortex-m7
-MFPU := fpv5-sp-d16
-PART := STM32F746xx
-
-FLAGS := -mcpu=$(MCPU) -mthumb
-FLAGS += -mfpu=$(MFPU) -mfloat-abi=hard
-
 WFLAGS := -Wall -Wextra -pedantic
 WFLAGS += -Wshadow -Wundef -Wmaybe-uninitialized -Wmissing-prototypes
 WFLAGS += -Wno-discarded-qualifiers -Wno-error=strict-prototypes
@@ -43,15 +34,8 @@ WFLAGS += -Wempty-body -Wshift-negative-value -Wstack-usage=2048 -Wreturn-type
 WFLAGS += -Wmultichar -Wformat-security -Wdouble-promotion -Wclobbered
 WFLAGS += -Wdeprecated -Wuninitialized
 
-CFLAGS := $(FLAGS) -D$(PART) -std=gnu11
-CFLAGS += -ffunction-sections -fdata-sections
-CFLAGS += -fstack-usage $(WFLAGS)
+CFLAGS := -std=gnu11 $(WFLAGS)
+CFLAGS += -DSDL_BUILD -DLV_CONF_INCLUDE_SIMPLE -DLV_LVGL_H_INCLUDE_SIMPLE
 
-LDFLAGS := $(FLAGS)
-LDFLAGS += -specs=nosys.specs
-#LDFLAGS += -specs=nano.specs
-LDFLAGS += -Wl,--gc-sections
-#LDFLAGS += -Wl,--start-group -lc -lm -Wl,--end-group
-
-ASFLAGS := $(FLAGS)
+LDFLAGS := -lSDL2 -lm
 

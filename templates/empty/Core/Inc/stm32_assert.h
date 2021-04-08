@@ -26,6 +26,7 @@
 #ifndef INC_STM32_ASSERT_H_
 #define INC_STM32_ASSERT_H_
 
+// TODO NDEBUG
 #ifdef  USE_FULL_ASSERT
 
 #include <stdint.h>
@@ -39,25 +40,25 @@
   * @retval None
   */
 #define assert_param(expr) ((expr) ? (void)0 \
-		                           : assert_failed( # expr, __FILE__, __LINE__))
+                                   : assert_failed( # expr, __FILE__, __LINE__))
 
 #include <cmsis_compiler.h>
 
 static inline void __assert_failed(char const * expr,
-		                           char const * file,
+                                   char const * file,
                                    char const * line) {
-	__disable_irq();
+    __disable_irq();
 #ifdef ASSERT_USE_ITM
-	ITM_puts(file, 256);
-	ITM_puts(":", 1);
-	ITM_puts(line, 8);
-	ITM_puts(" ASSERTION \"", 16);
-	ITM_puts(expr, 256);
-	ITM_puts("\" FAILED !\n", 16);
+    ITM_puts(file, 256);
+    ITM_puts(":", 1);
+    ITM_puts(line, 8);
+    ITM_puts(" ASSERTION \"", 16);
+    ITM_puts(expr, 256);
+    ITM_puts("\" FAILED !\n", 16);
 #endif
-	while (1) {
+    while (1) {
 
-	}
+    }
 }
 
 /* two preprocessing levels are needed: one to evaluate __LINE__, the other one to

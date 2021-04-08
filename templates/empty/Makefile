@@ -30,14 +30,17 @@ include arch.mk
 # Build tree
 ifeq ($(DEBUG), 1)
 	BUILD := Debug
+	CFLAGS += -g3
 else
 	BUILD := Release
+	CFLAGS += -Os
 endif
 
 # end products (executable, asm listing...)
 PRODUCT_BASE  := $(BUILD)/$(PRODUCT_NAME)
 PRODUCT_TMP   := $(PRODUCT_BASE).tmp
 PRODUCT_ELF   := $(PRODUCT_BASE).elf
+PRODUCT_SDL   := $(PRODUCT_BASE).sdl
 PRODUCT_HEX   := $(patsubst %.elf,%.hex,$(PRODUCT_ELF))
 PRODUCT_BIN   := $(patsubst %.elf,%.bin,$(PRODUCT_ELF))
 PRODUCT_MAP   := $(patsubst %.elf,%.map,$(PRODUCT_ELF))
@@ -45,8 +48,18 @@ PRODUCT_LIST  := $(patsubst %.elf,%.list,$(PRODUCT_ELF))
 DEBUG_SYMBOLS := $(PRODUCT_BASE).debug
 
 # default target builds dependencies too (det target)
-all: $(PRODUCT_ELF) $(PRODUCT_HEX) $(PRODUCT_BIN) $(PRODUCT_LIST) dep tags
+all: $(PRODUCT_ELF) $(PRODUCT_HEX) $(PRODUCT_BIN) $(PRODUCT_LIST)
 	$(SIZE) $(PRODUCT_ELF)
+
+everything: sdl all dep
+	mv $(PRODUCT_NAME).sdl $(PRODUCT_SDL)
+
+sdl: $(PRODUCT_SDL)
+	mv $(PRODUCT_SDL) . && make erase
+
+$(PRODUCT_SDL): erase
+	make -f Makefile.sdl
+#make -f Makefile.sdl && ./$@
 
 # sub-makefiles inclusions ####################################################
 # before to include any sub-makefiles, we initialize the variables they would
@@ -170,5 +183,5 @@ distclean: clean
 erase: clean distclean
 	-rm -rvf $(BUILD) Debug Release
 
-.PHONY: obj dep clean distclean erase all
+.PHONY: obj dep clean distclean erase all everything sdl
 

@@ -1,0 +1,107 @@
+##
+#    Copyright 2021 ENEGENO
+# 
+#   Licensed under the Apache License, Version 2.0 (the "License");
+#   you may not use this file except in compliance with the License.
+#   You may obtain a copy of the License at
+# 
+#       http://www.apache.org/licenses/LICENSE-2.0
+# 
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS,
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#   See the License for the specific language governing permissions and
+#   limitations under the License.
+# 
+##
+
+# executable name #############################################################
+PRODUCT_NAME := NAME_TO_SUBSTITUTE_BY_TEMPLATE
+
+# Build config: Debug or Release ##############################################
+# as with eclipse based tools, the build tree root is different  
+DEBUG ?= 1
+
+# toolchain and flags definitions #############################################
+include sdl_arch.mk
+CFLAGS += -DPRODUCT_NAME=\"$(PRODUCT_NAME)\"
+
+# Define build inputs and outputs #############################################
+
+# Build tree
+ifeq ($(DEBUG), 1)
+	BUILD := Debug
+    CFLAGS += -g3 -UNDEBUG
+else
+	BUILD := Release
+    CFLAGS += -Os -DNDEBUG
+endif
+
+# end products (executable, asm listing...)
+PRODUCT_BASE  := $(BUILD)/$(PRODUCT_NAME)
+PRODUCT_SDL   := $(PRODUCT_BASE).sdl
+
+# default target builds dependencies too (det target)
+all: $(PRODUCT_SDL)
+	$(SIZE) $(PRODUCT_SDL)
+
+# sub-makefiles inclusions ####################################################
+# before to include any sub-makefiles, we initialize the variables they would
+# update:
+#    - BUILD_TREE: the build subdirectories
+#    - INCLUDE: the include pathes
+#    - OBJ: the object files to be built
+
+# as with eclipse based tools, the build tree is similar to the source one
+# every sub-makefiles should append its build subtree in BUILD_TREE
+BUILD_TREE := $(BUILD)
+
+# starts with an empty include path and empty object file list
+INCLUDE :=
+OBJ :=
+
+include lvgl.mk
+
+include sdl_drivers.mk
+
+include sdl.mk
+
+# Targets #####################################################################
+# the stack usage files (*.su) are generated thanks to cflags "-stack-usage" 
+$(BUILD)/%.o: %.c
+	$(CC) $(INCLUDE) $(CFLAGS) -c -o $@ $<
+
+# dependencies (TODO -MM ?)
+$(BUILD)/%.d: %.c
+	$(CC) $(INCLUDE) $(CFLAGS) -M $< > $@
+
+# asm listing
+%.list: %.elf
+	$(OBJDUMP) -h -S $< > $@
+
+$(PRODUCT_SDL): obj
+	$(LD) -o $@ $(OBJ) $(LDFLAGS)
+
+# build tree
+$(BUILD_TREE):
+	mkdir -p $@
+
+# build object files
+obj: $(BUILD_TREE) $(OBJ)
+
+$(BUILD)/compiler.def:
+	$(CC) $(CFLAGS) -E -dM - < /dev/null > $@
+
+# Cleaning ####################################################################
+clean:
+	-@rm -vf $(OBJ)
+
+distclean: clean
+	-@rm -vf $(PRODUCT_SDL)
+	-@rm -vf $(BUILD)/compiler.def
+
+erase: clean distclean
+	-rm -rvf $(BUILD) Debug Release
+
+.PHONY: obj clean distclean erase all
+

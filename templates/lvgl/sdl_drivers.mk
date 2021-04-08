@@ -15,18 +15,18 @@
 # 
 ##
 
-# Project sources and sub-directories #########################################
-PROJ_SRC   := $(shell find Core/Src -name '*.c' -or -name '*.s')
-PROJ_SRC   += $(shell find Core/Startup -name '*.s')
-PROJ_SUB   := $(shell find Core -type d)
-PROJ_BUILD := $(addprefix $(BUILD)/, $(PROJ_SUB))
-PROJ_OBJ   := $(addprefix $(BUILD)/, $(patsubst %.c, %.o, $(PROJ_SRC)))
-# do not forget there is an asm file
-PROJ_OBJ   := $(patsubst %.s, %.o, $(PROJ_OBJ))
+DRIVERS_DIR := Drivers/SDL/
 
-PROJ_INC   := $(shell find Core/Inc -name '*.h')
+INCLUDE += -I$(DRIVERS_DIR)
 
-BUILD_TREE += $(PROJ_BUILD)
-INCLUDE += -ICore/Inc
-OBJ += $(PROJ_OBJ)
+DRIVERS_SRC := $(wildcard $(DRIVERS_DIR)/display/*.c)
+DRIVERS_SRC += $(wildcard $(DRIVERS_DIR)/gtkdrv/*.c)
+DRIVERS_SRC += $(wildcard $(DRIVERS_DIR)/indev/*.c)
 
+BUILD_TREE += $(BUILD)/$(DRIVERS_DIR)/display/
+BUILD_TREE += $(BUILD)/$(DRIVERS_DIR)/gtkdrv/
+BUILD_TREE += $(BUILD)/$(DRIVERS_DIR)/indev/
+BUILD_TREE += $(BUILD)/$(DRIVERS_DIR)/wayland/
+
+DRIVERS_OBJ := $(patsubst %.c, %.o, $(addprefix $(BUILD)/, $(DRIVERS_SRC)))
+OBJ += $(DRIVERS_OBJ)

@@ -119,9 +119,9 @@ static lv_disp_t *our_disp = NULL;
 
 void tft_init(void)
 {
-	/* There is only one display on STM32 */
-	if(our_disp != NULL)
-		abort();
+    /* There is only one display on STM32 */
+    if(our_disp != NULL)
+        abort();
     /* LCD Initialization */
     LCD_Init();
 
@@ -137,39 +137,39 @@ void tft_init(void)
     DMA2D_Config();
 #endif
    /*-----------------------------
-	* Create a buffer for drawing
-	*----------------------------*/
+    * Create a buffer for drawing
+    *----------------------------*/
 
    /* LittlevGL requires a buffer where it draws the objects. The buffer's has to be greater than 1 display row*/
 
-	static lv_disp_buf_t disp_buf_1;
-	static lv_color_t buf1_1[LV_HOR_RES_MAX * 68];
-	static lv_color_t buf1_2[LV_HOR_RES_MAX * 68];
-	lv_disp_buf_init(&disp_buf_1, buf1_1, buf1_2, LV_HOR_RES_MAX * 68);   /*Initialize the display buffer*/
+    static lv_disp_buf_t disp_buf_1;
+    static lv_color_t buf1_1[LV_HOR_RES_MAX * 68];
+    static lv_color_t buf1_2[LV_HOR_RES_MAX * 68];
+    lv_disp_buf_init(&disp_buf_1, buf1_1, buf1_2, LV_HOR_RES_MAX * 68);   /*Initialize the display buffer*/
 
 
-	/*-----------------------------------
-	* Register the display in LittlevGL
-	*----------------------------------*/
+    /*-----------------------------------
+    * Register the display in LittlevGL
+    *----------------------------------*/
 
-	lv_disp_drv_t disp_drv;                         /*Descriptor of a display driver*/
-	lv_disp_drv_init(&disp_drv);                    /*Basic initialization*/
+    lv_disp_drv_t disp_drv;                         /*Descriptor of a display driver*/
+    lv_disp_drv_init(&disp_drv);                    /*Basic initialization*/
 
-	/*Set up the functions to access to your display*/
+    /*Set up the functions to access to your display*/
 
-	/*Set the resolution of the display*/
-	disp_drv.hor_res = 480;
-	disp_drv.ver_res = 272;
+    /*Set the resolution of the display*/
+    disp_drv.hor_res = 480;
+    disp_drv.ver_res = 272;
 
-	/*Used to copy the buffer's content to the display*/
-	disp_drv.flush_cb = ex_disp_flush;
+    /*Used to copy the buffer's content to the display*/
+    disp_drv.flush_cb = ex_disp_flush;
 
-	/*Set a display buffer*/
-	disp_drv.buffer = &disp_buf_1;
+    /*Set a display buffer*/
+    disp_drv.buffer = &disp_buf_1;
 
 
-	/*Finally register the driver*/
-	our_disp = lv_disp_drv_register(&disp_drv);
+    /*Finally register the driver*/
+    our_disp = lv_disp_drv_register(&disp_drv);
 }
 
 /**********************
@@ -182,10 +182,10 @@ void tft_init(void)
  * This function is required only when LV_VDB_SIZE != 0 in lv_conf.h*/
 static void ex_disp_flush(lv_disp_drv_t *drv, const lv_area_t *area, lv_color_t * color_p)
 {
-	int32_t x1 = area->x1;
-	int32_t x2 = area->x2;
-	int32_t y1 = area->y1;
-	int32_t y2 = area->y2;
+    int32_t x1 = area->x1;
+    int32_t x2 = area->x2;
+    int32_t y1 = area->y1;
+    int32_t y2 = area->y2;
     /*Return if the area is out the screen*/
 
     if(x2 < 0) return;
@@ -206,8 +206,8 @@ static void ex_disp_flush(lv_disp_drv_t *drv, const lv_area_t *area, lv_color_t 
     y_fill_act = act_y1;
     buf_to_flush = color_p;
 
-	SCB_CleanInvalidateDCache();
-	SCB_InvalidateICache();
+    SCB_CleanInvalidateDCache();
+    SCB_InvalidateICache();
     /*##-7- Start the DMA transfer using the interrupt mode #*/
     /* Configure the source, destination and buffer size DMA fields and Start DMA Stream transfer */
     /* Enable All the DMA interrupts */
@@ -220,7 +220,7 @@ static void ex_disp_flush(lv_disp_drv_t *drv, const lv_area_t *area, lv_color_t 
              length);
     if(err != HAL_OK)
     {
-        while(1);	/*Halt on error*/
+        while(1);    /*Halt on error*/
     }
 }
 
@@ -465,11 +465,11 @@ static void DMA_TransferComplete(DMA_HandleTypeDef *han)
     y_fill_act ++;
 
     if(y_fill_act > y2_fill) {
-    	SCB_CleanInvalidateDCache();
-    	SCB_InvalidateICache();
+        SCB_CleanInvalidateDCache();
+        SCB_InvalidateICache();
         lv_disp_flush_ready(&our_disp->driver);
     } else {
-    	uint32_t length = (x2_flush - x1_flush + 1);
+        uint32_t length = (x2_flush - x1_flush + 1);
         buf_to_flush += x2_flush - x1_flush + 1;
         /*##-7- Start the DMA transfer using the interrupt mode ####################*/
         /* Configure the source, destination and buffer size DMA fields and Start DMA Stream transfer */
@@ -480,7 +480,7 @@ static void DMA_TransferComplete(DMA_HandleTypeDef *han)
         if(HAL_DMA_Start_IT(han,(uint32_t)buf_to_flush, (uint32_t)&my_fb[y_fill_act * TFT_HOR_RES + x1_flush],
                             length) != HAL_OK)
         {
-            while(1);	/*Halt on error*/
+            while(1);    /*Halt on error*/
         }
     }
 }

@@ -85,7 +85,7 @@ diff -Naur -x Core -x Drivers -x Utilities -x Middlewares \
          "$PROJECT" "$PROJECT""-$X" > "$THERE/$PROJECT"_make.patch
 
 diff -Naur -x Core -x Drivers -x Utilities -x Middlewares \
-           -x *.mk -x Makefile -x gdbinit -x *.ld \
+           -x *.mk -x Makefile* -x gdbinit -x *.ld \
          "$PROJECT" "$PROJECT""-$X" > "$THERE/$PROJECT"_cube.patch
 
 cd $THERE

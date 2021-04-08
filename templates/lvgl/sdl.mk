@@ -15,18 +15,13 @@
 # 
 ##
 
-# Project sources and sub-directories #########################################
-PROJ_SRC   := $(shell find Core/Src -name '*.c' -or -name '*.s')
-PROJ_SRC   += $(shell find Core/Startup -name '*.s')
-PROJ_SUB   := $(shell find Core -type d)
-PROJ_BUILD := $(addprefix $(BUILD)/, $(PROJ_SUB))
-PROJ_OBJ   := $(addprefix $(BUILD)/, $(patsubst %.c, %.o, $(PROJ_SRC)))
-# do not forget there is an asm file
-PROJ_OBJ   := $(patsubst %.s, %.o, $(PROJ_OBJ))
+SDL_SRC := Core/Src/lv_demo_widgets.c
+SDL_SRC += Core/Sdl/mouse_cursor_icon.c
+SDL_SRC += Core/Sdl/main.c
 
-PROJ_INC   := $(shell find Core/Inc -name '*.h')
+BUILD_TREE += $(BUILD)/Core/Src/ $(BUILD)/Core/Sdl/
 
-BUILD_TREE += $(PROJ_BUILD)
-INCLUDE += -ICore/Inc
-OBJ += $(PROJ_OBJ)
+SDL_OBJ := $(patsubst %.c, %.o, $(addprefix $(BUILD)/, $(SDL_SRC)))
+OBJ += $(SDL_OBJ)
 
+INCLUDE += -ICore/Inc -ICore/Sdl

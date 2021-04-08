@@ -65,7 +65,7 @@ void touchpad_init(void)
  * @return true: the device is pressed, false: released
  */
 static bool touchpad_read(lv_indev_drv_t *indev __attribute__((unused)),
-		                  lv_indev_data_t *data)
+                          lv_indev_data_t *data)
 {
     /* Read your touchpad */
     static int16_t last_x = 0;

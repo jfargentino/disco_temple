@@ -86,6 +86,9 @@ We will try to write and modify code in the [Core directory](./templates/empty/C
   * the [system initialization code](./templates/empty/Core/Src/system_stm32f7xx.c), called just before `main`, to setup the memory (external RAM, FLASH...), relocate interrupt vector table, setting clocks
   * the [application entry point](./templates/empty/Core/Src/main.c), the error handler, and `asset_failed` definition
 
+LD1 -> SB8 -> ARD_D13 -> PI1
+SW1 -> SB6 -> B_USER -> PI11
+
 ## LVGL
 
 The LVGL portage need display and input drivers.
@@ -103,6 +106,7 @@ TODO: LV_LVGL_H_INCLUDE_SIMPLE
 
 ## TODOs
 
+  * Keep CubeMX comments and layout in main.c, stm32f7xx_hal_msp.c and others
   * `printf` plugged to SWO
   * debug configurations for other servers, without SWO, GUI, detailing SWO, copy necessary dbg ressources into new project.
   * Handling 3rd part libraries: FreeRTOS and LVGL with git submodules

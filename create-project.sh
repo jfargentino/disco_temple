@@ -119,8 +119,10 @@ if [ $LVGL -gt 0 ]; then
     L_LVGL=$WORKSPACE/$PROJECT/$THIRD_PART/lvgl
     R_LVGL=./$THIRD_PART/lvgl-7.11.0
     cp -rv $R_LVGL $L_LVGL
+    cp -rv ./Drivers/SDL $WORKSPACE/$PROJECT/Drivers
     cp -rv templates/lvgl/Core/ $WORKSPACE/$PROJECT/
-    cp -v templates/lvgl/lvgl.mk $WORKSPACE/$PROJECT/
+    cp -v templates/lvgl/*.mk $WORKSPACE/$PROJECT/
+    cp -v templates/lvgl/Makefile.* $WORKSPACE/$PROJECT/
     cp -v templates/lvgl/.cproject $WORKSPACE/$PROJECT/
 fi
 
